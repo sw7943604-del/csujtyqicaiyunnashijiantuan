@@ -1,0 +1,57 @@
+/* ==========================================================================
+   设计令牌：全站唯一视觉常量来源
+   深浅双态：展厅墨（媒体章节） × 档案纸（阅读章节）
+   ========================================================================== */
+:root {
+  /* —— 基底 —— */
+  --ink: #191c20;             /* 展厅墨：媒体章节底 */
+  --ink-raise: #22262c;       /* 展厅墨·抬升：深底上的面 */
+  --paper: #f5f2eb;           /* 档案纸：阅读章节底 */
+  --paper-raise: #fbf9f4;     /* 纸面·抬升 */
+  --text-on-paper: #1c1e21;   /* 纸面正文 */
+  --text-on-ink: #edeae3;     /* 深底正文 */
+  --muted-on-paper: #5a6068;  /* 纸面次级 */
+  --muted-on-ink: #a9aeb5;    /* 深底次级 */
+  --steel: #7c8792;           /* 钢灰 */
+  --rail: #9aa1a8;            /* 展线 */
+  --hairline-on-ink: rgb(237 234 227 / 0.16);
+  --hairline-on-paper: rgb(28 30 33 / 0.16);
+
+  /* —— 六项目识别色（归属固定，不得交换） —— */
+  --c-tiemai: #1f4e79;  --c-tiemai-tint: #8fb3d9;  --c-tiemai-sub: #7c8792;
+  --c-xunhong: #a63a32; --c-xunhong-tint: #d98780; --c-xunhong-sub: #f3e7d3;
+  --c-xinchuan: #c46a2b; --c-xinchuan-tint: #e3a068; --c-xinchuan-sub: #704332;
+  --c-zuji: #665487;    --c-zuji-tint: #b3a4d1;    --c-zuji-sub: #b8aec7;
+  --c-fazhi: #087e8b;   --c-fazhi-tint: #63bcc7;   --c-fazhi-sub: #b8dfe3;
+  --c-yulu: #3f7d5a;    --c-yulu-tint: #8abb9c;    --c-yulu-sub: #c7d8c8;
+
+  /* —— 字体 —— */
+  --font-display: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', serif;
+  --font-body: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-label: 'JetBrains Mono', ui-monospace, 'Noto Sans SC', monospace;
+
+  /* —— 字阶 —— */
+  --text-xs: 0.75rem;    /* 12 展签 */
+  --text-sm: 0.8125rem;  /* 13 辅助 */
+  --text-md: 1rem;       /* 16 正文 */
+  --text-lg: 1.125rem;   /* 18 引言 */
+  --text-xl: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);        /* 小节 24–32 */
+  --text-2xl: clamp(2rem, 1.5rem + 2.4vw, 3rem);         /* 章节题 32–48 */
+  --text-hero: clamp(2.5rem, 1.6rem + 4.6vw, 5.25rem);   /* 序厅主题 40–84 */
+
+  /* —— 间距（4/8 节奏） —— */
+  --space-1: 0.25rem; --space-2: 0.5rem;  --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.5rem;  --space-6: 2rem;    --space-7: 3rem;    --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* —— 版面 —— */
+  --container: 75rem;   /* 1200 */
+  --reading: 68ch;      /* 阅读栏宽 */
+  --radius: 2px;        /* 装裱框近直角 */
+
+  /* —— 动效 —— */
+  --duration-fast: 0.18s;
+  --duration-base: 0.3s;
+  --duration-slow: 0.7s;
+  --ease-standard: cubic-bezier(0.2, 0.6, 0.2, 1);
+}

@@ -1,0 +1,49 @@
+---
+/**
+ * 页脚：含「关于」入口（按内容要求，关于不放顶部主导航）。
+ */
+import { site } from '../data/site';
+import { href } from '../utils/paths';
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div>
+      <p class="site-footer__name">{site.name}</p>
+      <p class="site-footer__note">
+        本站仅展示完成授权与隐私核验的实践材料。2026 年暑期实践的三个项目处于筹备阶段，相关内容仅为策划方向。
+      </p>
+      <div class="site-footer__counter" aria-label="匿名访客统计">
+        <span>累计访客 <strong id="busuanzi_site_uv">加载中</strong> 人</span>
+        <span>累计访问 <strong id="busuanzi_site_pv">加载中</strong> 次</span>
+      </div>
+      <p class="site-footer__privacy">统计由第三方匿名计数服务提供；加载失败时显示“暂不可用”。</p>
+    </div>
+    <nav class="site-footer__links" aria-label="页脚导航">
+      <a href={href(site.about.path)}>{site.about.label}</a>
+      {site.nav.slice(1).map((item) => <a href={href(item.path)}>{item.label}</a>)}
+    </nav>
+    <p class="site-footer__meta">QICAI YUNNAN · TIEMAI TONGXING — PRACTICE ARCHIVE</p>
+  </div>
+</footer>
+
+<script is:inline>
+  const normalizeVisitorCount = (value) => {
+    const text = value.textContent?.trim() ?? '';
+    if (text !== '加载中' && text !== '暂不可用' && !/^\d[\d,.KWE万]*$/i.test(text)) value.textContent = '暂不可用';
+  };
+  ['busuanzi_site_uv', 'busuanzi_site_pv'].forEach((id) => {
+    const value = document.getElementById(id);
+    if (!value) return;
+    new MutationObserver(() => normalizeVisitorCount(value)).observe(value, { childList: true, characterData: true, subtree: true });
+  });
+  window.setTimeout(() => {
+    ['busuanzi_site_uv', 'busuanzi_site_pv'].forEach((id) => {
+      const value = document.getElementById(id);
+      if (value) {
+        normalizeVisitorCount(value);
+        if (value.textContent?.trim() === '加载中') value.textContent = '暂不可用';
+      }
+    });
+  }, 8000);
+</script>

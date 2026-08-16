@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import { stages } from '../data/stages';
+import { projectsByStage } from '../data/projects';
+import { href } from '../utils/paths';
+---
+
+<BaseLayout title="实践脉络 · 七彩云南·铁脉同行">
+  <main id="main" class="timeline-page tone-paper">
+    <header class="page-intro container"><p class="eyebrow">ROUTE · 实践展线</p><h1>实践脉络</h1><p class="reading">三个实践阶段依时间顺序展开，六个项目分别归入对应展厅。圆形代表阶段，方形代表项目；虚线表示仍在筹备。</p></header>
+    <div class="timeline container" aria-label="三个实践阶段的纵向展线">
+      {stages.map((stage) => (
+        <section class:list={['timeline-stage', { 'timeline-stage--prep': stage.status === 'preparing' }]} id={`timeline-stage-${stage.id}`}>
+          <span class="timeline-stage__station" aria-hidden="true"></span>
+          <header><p class="eyebrow">展厅 {stage.numeral}</p><h2>{stage.name}</h2><StatusBadge status={stage.status} /></header>
+          <p class="timeline-stage__summary reading">{stage.summary}</p>
+          <ol class="timeline-projects">{projectsByStage(stage.id).map((project, index) => (
+            <li style={`--project: ${project.color.base};`}><span class="timeline-projects__node" aria-hidden="true"></span><a href={href(`projects/${project.slug}/`)}><span>展间 {stage.numeral}.{index + 1}</span><strong>{project.name}</strong><StatusBadge status={project.status} /></a></li>
+          ))}</ol>
+          <a class="timeline-stage__return" href={href(`#stage-${stage.id}`)}>返回首页对应展厅</a>
+        </section>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .timeline-page { padding-top: 4rem; }
+  .page-intro { padding-block: var(--space-9) var(--space-7); display: grid; gap: var(--space-4); }
+  .page-intro h1 { font-size: var(--text-hero); }
+  .page-intro > p:last-child, .timeline-stage__summary { color: var(--muted-on-paper); }
+  .timeline { position: relative; padding-bottom: var(--space-9); }
+  .timeline::before { content: ''; position: absolute; left: 18px; inset-block: 0 var(--space-9); width: 2px; background: var(--steel); }
+  .timeline-stage { position: relative; margin-left: 18px; padding: 0 0 var(--space-9) var(--space-7); }
+  .timeline-stage__station { position: absolute; left: -10px; top: 6px; width: 20px; height: 20px; border-radius: 50%; background: var(--text-on-paper); border: 5px solid var(--paper); }
+  .timeline-stage--prep .timeline-stage__station { background: var(--paper); border: 2px dashed var(--text-on-paper); }
+  .timeline-stage header { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3) var(--space-5); }
+  .timeline-stage header .eyebrow { flex-basis: 100%; }
+  .timeline-stage h2 { font-size: var(--text-2xl); }
+  .timeline-stage__summary { margin-block: var(--space-5); }
+  .timeline-projects { display: grid; border-top: 1px solid var(--hairline-on-paper); }
+  .timeline-projects li { position: relative; border-bottom: 1px solid var(--hairline-on-paper); }
+  .timeline-projects__node { position: absolute; left: calc(-1 * var(--space-7) - 5px); top: 30px; width: 10px; height: 10px; background: var(--project); }
+  .timeline-projects a { min-height: 72px; display: grid; grid-template-columns: 8rem 1fr auto; align-items: center; gap: var(--space-4); padding-block: var(--space-3); }
+  .timeline-projects a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+  .timeline-projects a > span:first-child { font: var(--text-xs) var(--font-label); color: var(--muted-on-paper); }
+  .timeline-stage__return { display: inline-block; margin-top: var(--space-5); min-height: 44px; padding-block: var(--space-2); text-decoration: underline; text-underline-offset: 4px; }
+  .timeline-stage--prep { border-bottom: 1px dashed var(--hairline-on-paper); }
+  @media (max-width: 40rem) { .timeline-projects a { grid-template-columns: 1fr auto; } .timeline-projects a > span:first-child { grid-column: 1 / -1; } .timeline-stage { padding-left: var(--space-5); } .timeline-projects__node { left: calc(-1 * var(--space-5) - 5px); } }
+</style>

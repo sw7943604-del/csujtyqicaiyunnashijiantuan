@@ -1,0 +1,58 @@
+---
+/**
+ * 顶部导视牌：固定导航（六项），移动端折叠为抽屉。
+ */
+import { site } from '../data/site';
+import { href, base } from '../utils/paths';
+
+const pathname = Astro.url.pathname;
+const isCurrent = (path: string): boolean => {
+  const target = href(path);
+  if (path === '') return pathname === target || pathname === base;
+  return pathname.startsWith(target);
+};
+---
+
+<header class="site-header">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="site-header__bar">
+    <a class="site-header__brand" href={href()} aria-label={`${site.name} 首页`}>
+      <span class="site-header__brand-name">{site.name}</span>
+      <span class="site-header__brand-sub">{site.tagline}</span>
+    </a>
+
+    <nav class="site-header__nav" aria-label="主导航">
+      {site.nav.map((item) => (
+        <a href={href(item.path)} aria-current={isCurrent(item.path) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <button class="site-header__menu" type="button" aria-expanded="false" aria-controls="drawer">
+      菜单
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-label="站点导航菜单">
+  <div class="drawer__top">
+    <span class="drawer__title">展厅导视 · INDEX</span>
+    <button class="drawer__close" type="button" data-drawer-close>关闭</button>
+  </div>
+  <div class="drawer__body">
+    <span class="drawer__rail" aria-hidden="true"></span>
+    <nav class="drawer__nav" aria-label="移动端主导航">
+      {site.nav.map((item, i) => (
+        <a href={href(item.path)} aria-current={isCurrent(item.path) ? 'page' : undefined}>
+          <small>{String(i + 1).padStart(2, '0')}</small>
+          {item.label}
+        </a>
+      ))}
+      <a href={href(site.about.path)}>
+        <small>{String(site.nav.length + 1).padStart(2, '0')}</small>
+        {site.about.label}
+      </a>
+    </nav>
+  </div>
+</div>

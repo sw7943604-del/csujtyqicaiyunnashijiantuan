@@ -1,0 +1,41 @@
+---
+/**
+ * 项目门牌：项目入口卡片。
+ * 固定五要素：识别色块、项目名、所属阶段、状态徽章、一句摘要。
+ * prep = true 时为线框「施工中」形态（筹备项目专用）。
+ */
+import type { Project } from '../data/projects';
+import { stages } from '../data/stages';
+import StatusBadge from './StatusBadge.astro';
+import { href } from '../utils/paths';
+
+interface Props {
+  project: Project;
+  /** 展间编号，如 Ⅰ.1（编号即层级：展厅.展间） */
+  index: string;
+  prep?: boolean;
+  /** 总览页使用完整项目名，紧凑场景仍使用短名 */
+  full?: boolean;
+}
+
+const { project, index, prep = false, full = false } = Astro.props;
+const stage = stages.find((s) => s.id === project.stageId)!;
+---
+
+<a
+  class:list={['plate', { 'plate--prep': prep }]}
+  href={href(`projects/${project.slug}/`)}
+  aria-label={`${project.name}（${stage.name}）`}
+  style={`--plate: ${project.color.base}; --plate-tint: ${project.color.tint};`}
+>
+  <span class="plate__head">
+    <span class="plate__chip" aria-hidden="true"></span>
+    <span class="plate__index">展间 {index}</span>
+  </span>
+  <span class="plate__name">{full ? project.name : project.shortName}</span>
+  <span class="plate__meta">
+    {stage.name} · <StatusBadge status={project.status} />
+  </span>
+  <span class="plate__summary">{project.summary}</span>
+  <span class="plate__cta">进入展间</span>
+</a>

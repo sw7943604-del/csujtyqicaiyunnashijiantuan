@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { projects } from '../data/projects';
+import { textOutcomes } from '../data/text-outcomes';
+const formed = projects.filter((project) => project.status === 'conducted');
+const planned = projects.filter((project) => project.status === 'preparing');
+---
+
+<BaseLayout title="成果 · 七彩云南·铁脉同行">
+  <main id="main" class="outcomes-page tone-paper">
+    <header class="page-intro container"><p class="eyebrow">RESULTS · 状态分区</p><h1>成果</h1><p class="reading">成果按当前事实状态分别登记。计划或预期不会被写成已经取得的结果。</p></header>
+    <div class="outcome-sections container">
+      <section><p class="eyebrow">FORMED</p><h2>已形成成果</h2><div class="outcome-grid">{formed.map((project) => <article><h3>{project.name}</h3><ul>{project.outcomes.map((item) => <li>{item}</li>)}</ul></article>)}</div></section>
+      <section><p class="eyebrow">TEXT ARCHIVE</p><h2>文字成果</h2><p class="section-note">单列已经形成的调研报告、新闻稿、建议材料与成果登记；此处展示公开摘要，不直接提供含内部信息的源文件。</p><div class="text-outcome-grid">{textOutcomes.map((item) => <article><div class="text-outcome-meta"><span>{item.year}</span><span>{item.type}</span></div><h3>{item.title}</h3><p>{item.summary}</p></article>)}</div></section>
+      <section><p class="eyebrow">IN PROGRESS</p><h2>正在整理</h2><p class="section-note">网站持续整理已授权的原始照片、视频、微课与报道索引；尚未完成公开核验的材料不会提前呈现。</p></section>
+      <section><p class="eyebrow">PLANNED</p><h2>未来计划或预期成果</h2><p class="section-note">以下仅为 2026 年暑期筹备方向，不代表已经开展或形成成果。</p><div class="outcome-grid outcome-grid--planned">{planned.map((project) => <article><h3>{project.name}</h3><ul>{project.direction.map((item) => <li>{item}</li>)}</ul></article>)}</div></section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .outcomes-page { padding: 4rem 0 var(--space-9); min-height: 100vh; }
+  .page-intro { padding-block: var(--space-9); display: grid; gap: var(--space-4); }
+  .page-intro h1 { font-size: var(--text-hero); } .page-intro > p:last-child { color: var(--muted-on-paper); }
+  .outcome-sections { display: grid; }
+  .outcome-sections section { padding-block: var(--space-7); border-top: 1px solid var(--hairline-on-paper); }
+  .outcome-sections section:last-child { border-bottom: 1px solid var(--hairline-on-paper); }
+  .outcome-sections h2 { margin-block: var(--space-3) var(--space-5); font-size: var(--text-2xl); }
+  .outcome-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--space-4); }
+  .outcome-grid article { padding: var(--space-5); border: 1px solid var(--hairline-on-paper); }
+  .outcome-grid h3 { margin-bottom: var(--space-3); font-size: var(--text-lg); }
+  .outcome-grid ul { display: grid; gap: var(--space-2); padding-left: 1.25rem; color: var(--muted-on-paper); }
+  .outcome-grid--planned article { border-style: dashed; }
+  .section-note { max-width: 48rem; margin-bottom: var(--space-5); color: var(--muted-on-paper); }
+  .text-outcome-grid { display: grid; gap: var(--space-3); }
+  .text-outcome-grid article { display: grid; grid-template-columns: 10rem minmax(0, 1fr); gap: var(--space-2) var(--space-5); padding: var(--space-4) 0; border-top: 1px solid var(--hairline-on-paper); }
+  .text-outcome-grid h3 { font-size: var(--text-lg); }
+  .text-outcome-grid p { grid-column: 2; color: var(--muted-on-paper); }
+  .text-outcome-meta { display: flex; gap: var(--space-2); font: var(--text-xs) var(--font-label); color: var(--muted-on-paper); }
+  @media (max-width: 40rem) { .text-outcome-grid article { grid-template-columns: 1fr; } .text-outcome-grid p { grid-column: 1; } }
+</style>

@@ -1,0 +1,32 @@
+---
+/**
+ * 展线脊柱：桌面端左侧的滚动导视（≥1200px 显示）。
+ * 移动端折叠为顶部 3px 进度条。JS 驱动填充与当前位置。
+ */
+const items = [
+  { id: 'prologue', label: '序厅' },
+  { id: 'railmap', label: '展线总图' },
+  { id: 'stage-2025-summer', label: '展厅 Ⅰ' },
+  { id: 'stage-2026-winter', label: '展厅 Ⅱ' },
+  { id: 'stage-2026-summer', label: '展厅 Ⅲ' },
+  { id: 'finale', label: '尾声' },
+];
+---
+
+<nav class="spine" aria-label="首页展线导视">
+  <span class="spine__track" aria-hidden="true"><span class="spine__fill"></span></span>
+  <ol class="spine__list">
+    {items.map((item) => (
+      <li>
+        <a href={`#${item.id}`} data-spine-link={item.id}>
+          <span class="spine__dot" aria-hidden="true"></span>
+          <span class="spine__label">{item.label}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<div class="progress-bar" aria-hidden="true">
+  <span class="progress-bar__fill"></span>
+</div>

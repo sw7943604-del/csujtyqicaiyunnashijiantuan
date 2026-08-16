@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="关于 · 七彩云南·铁脉同行">
+  <main id="main" class="about-page tone-paper">
+    <article class="container reading">
+      <header class="page-intro"><p class="eyebrow">ABOUT · 项目说明</p><h1>关于</h1><p>“七彩云南·铁脉同行”以三个实践阶段、六个实践项目为基本结构，采用沿铁路展开的影像展叙事。</p></header>
+      <section><h2>项目背景</h2><p>网站用于整理和展示高校社会实践项目。2025 年暑期与 2026 年寒假项目标记为已开展；2026 年暑期的“重走足迹”“法治科普”“语路通达”仍处于筹备阶段。</p></section>
+      <section><h2>素材授权与隐私</h2><p>真实图片、视频、姓名和成果只有在完成归属、授权、隐私与元数据核验后才会公开。未核验媒体不会进入影像档案，页面也不依据照片推断人物身份。</p></section>
+      <section><h2>内容说明</h2><p>网站按实践阶段整理项目过程、影像、视频、文字成果与团队名录。已开展项目呈现经核验的真实记录，筹备项目仅展示已经确认的计划内容。</p></section>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-page { padding: 4rem 0 var(--space-9); min-height: 100vh; }
+  .page-intro { padding-block: var(--space-9) var(--space-7); display: grid; gap: var(--space-4); }
+  .page-intro h1 { font-size: var(--text-hero); }
+  article section { padding-block: var(--space-6); border-top: 1px solid var(--hairline-on-paper); }
+  article h2 { margin-bottom: var(--space-4); font-size: var(--text-xl); }
+  article p { color: var(--muted-on-paper); }
+</style>

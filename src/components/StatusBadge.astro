@@ -1,0 +1,19 @@
+---
+/**
+ * 状态徽章：实心点 = 已开展，虚线空心点 = 筹备中。
+ * 点形 + 文字双重编码，不依赖颜色传递状态。
+ */
+import type { StageStatus } from '../data/stages';
+
+interface Props {
+  status: StageStatus;
+}
+
+const { status } = Astro.props;
+const label = status === 'conducted' ? '已开展' : '筹备中';
+---
+
+<span class:list={['badge', `badge--${status}`]}>
+  <span class="badge__dot" aria-hidden="true"></span>
+  {label}
+</span>

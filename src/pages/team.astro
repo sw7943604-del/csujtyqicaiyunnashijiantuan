@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import { stages } from '../data/stages';
+import { teamByStage } from '../data/team';
+import { mediaForSlot } from '../data/media';
+import { href } from '../utils/paths';
+const teamPhotoByStage = Object.fromEntries(stages.map((stage) => [stage.id, mediaForSlot(stage.leadSlot)[0]]));
+---
+
+<BaseLayout title="团队 · 七彩云南·铁脉同行">
+  <main id="main" class="team-page tone-paper">
+    <header class="page-intro container"><p class="eyebrow">ROSTER · 阶段名录</p><h1>团队</h1><p class="reading">本页只按实践阶段展示经授权的姓名。同一成员可能参与多个阶段。</p></header>
+    <div class="roster container">{stages.map((stage) => (
+      <section id={`stage-${stage.id}`}><header><p class="eyebrow">展厅 {stage.numeral}</p><h2>{stage.name}</h2><StatusBadge status={stage.status} /></header><ul class="name-wall">{teamByStage[stage.id].map((name) => <li class="name-wall__item">{name}</li>)}</ul>{teamPhotoByStage[stage.id] ? <figure class="team-photo"><img src={href(teamPhotoByStage[stage.id].src)} alt={teamPhotoByStage[stage.id].alt} width={teamPhotoByStage[stage.id].width} height={teamPhotoByStage[stage.id].height} loading="lazy" /><figcaption>阶段合影 · {teamPhotoByStage[stage.id].caption}</figcaption></figure> : <p class="team-photo-empty">本阶段仍在筹备，尚无现场合影。</p>}</section>
+    ))}</div>
+  </main>
+</BaseLayout>
+
+<style>
+  .team-page { padding: 4rem 0 var(--space-9); min-height: 100vh; }
+  .page-intro { padding-block: var(--space-9); display: grid; gap: var(--space-4); }
+  .page-intro h1 { font-size: var(--text-hero); } .page-intro > p:last-child { color: var(--muted-on-paper); }
+  .roster section { padding-block: var(--space-7); border-top: 1px solid var(--hairline-on-paper); }
+  .roster section:last-child { border-bottom: 1px solid var(--hairline-on-paper); }
+  .roster header { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3) var(--space-5); margin-bottom: var(--space-5); }
+  .roster header .eyebrow { flex-basis: 100%; } .roster h2 { font-size: var(--text-2xl); }
+  .name-wall { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1px; margin: 0; padding: 1px; list-style: none; background: var(--hairline-on-paper); }
+  .name-wall__item { min-height: 4.5rem; display: grid; place-items: center; padding: var(--space-3); background: var(--paper); font: var(--text-lg) var(--font-display); letter-spacing: .12em; }
+  .team-photo { margin: var(--space-6) 0 0; max-width: 64rem; }
+  .team-photo img { width: 100%; max-height: 38rem; object-fit: contain; background: var(--paper-deep); }
+  .team-photo figcaption, .team-photo-empty { padding-top: var(--space-3); color: var(--muted-on-paper); font: var(--text-sm) var(--font-label); }
+</style>

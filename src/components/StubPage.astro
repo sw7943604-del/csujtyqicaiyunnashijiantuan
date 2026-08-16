@@ -1,0 +1,24 @@
+---
+/**
+ * 占位页：样板阶段保证导航可达、不 404；后续批次替换为正式页面。
+ */
+import { href } from '../utils/paths';
+
+interface Props {
+  title: string;
+  note: string;
+}
+
+const { title, note } = Astro.props;
+---
+
+<main id="main">
+  <section class="stub tone-ink" aria-labelledby="stub-title">
+    <div class="container stub__grid">
+      <p class="eyebrow">建设中 · UPCOMING</p>
+      <h1 id="stub-title">{title}</h1>
+      <p>{note}</p>
+      <a class="stub__back" href={href()}>← 返回首页</a>
+    </div>
+  </section>
+</main>

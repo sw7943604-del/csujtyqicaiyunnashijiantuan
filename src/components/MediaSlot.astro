@@ -1,0 +1,87 @@
+---
+/**
+ * 媒体插槽组件：全站唯一的媒体渲染入口。
+ * 按 slot ID 查 media-slots.json 注册表，渲染「定比装裱框 + 展签」。
+ * 真实影像到位后只需替换 img 的 src/srcset，本结构不变。
+ */
+import slotsData from '../data/media-slots.json';
+import { mediaForSlot } from '../data/media';
+import { href } from '../utils/paths';
+
+interface SlotDef {
+  id: string;
+  ratio: string;
+  purpose: string;
+  type: string;
+  contentStatus: string;
+  requiredCaption?: string;
+}
+
+interface Props {
+  /** media-slots.json 中的稳定插槽 ID */
+  id: string;
+  /** 呈现变体：hero = 序厅满幅；lead = 章节引导（默认） */
+  variant?: 'hero' | 'lead';
+  class?: string;
+  style?: string;
+}
+
+const { id, variant = 'lead', class: className, style } = Astro.props;
+
+const slots = slotsData.slots as unknown as SlotDef[];
+const slot = slots.find((s) => s.id === id);
+if (!slot) {
+  throw new Error(`MediaSlot：插槽 ID「${id}」未在 media-slots.json 注册，拒绝渲染未登记媒体位。`);
+}
+
+const placeholderMap = slotsData.placeholders as Record<string, string>;
+const placeholderSrc = placeholderMap[slot.ratio];
+if (!placeholderSrc) {
+  throw new Error(`MediaSlot：插槽「${id}」的比例「${slot.ratio}」没有对应占位图。`);
+}
+
+/** 占位图固有尺寸（与 SVG 一致），写入宽高防 CLS */
+const dims: Record<string, [number, number]> = {
+  '21:9': [2100, 900],
+  '16:9': [1600, 900],
+  '4:3': [1200, 900],
+  '3:4': [900, 1200],
+};
+const [w, h] = dims[slot.ratio] ?? [1600, 900];
+const record = mediaForSlot(id)[0];
+
+/** 占位阶段 alt：如实说明是占位图；真实 alt 由素材维护者按 altRequirement 填写 */
+const alt = record?.alt ?? `占位图：${slot.purpose}（${slot.ratio} 画幅，${slot.contentStatus}）`;
+const src = record?.src ?? placeholderSrc;
+
+const isPrep = slot.type === 'preparation-visual';
+---
+
+<figure
+  class:list={[
+    'media-slot',
+    `media-slot--${variant}`,
+    { 'media-slot--prep': isPrep },
+    className,
+  ]}
+  style={style}
+  data-slot={slot.id}
+>
+  <div class="media-slot__frame">
+    <img
+      src={href(src)}
+      width={record?.width ?? w}
+      height={record?.height ?? h}
+      alt={alt}
+      loading={variant === 'hero' ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  </div>
+  <figcaption class="media-slot__label">
+    {!record && <span class="media-slot__id">{slot.id}</span>}
+    <span>{record?.caption ?? `${slot.purpose} · ${slot.contentStatus}`}</span>
+    {isPrep && slot.requiredCaption && (
+      <span class="media-slot__caption">{slot.requiredCaption}</span>
+    )}
+  </figcaption>
+</figure>

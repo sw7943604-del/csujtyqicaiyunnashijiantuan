@@ -1,0 +1,52 @@
+---
+/**
+ * 展厅章节：首页的三个阶段章节。
+ * 已开展 = 深色展厅（tone-ink）；筹备中 = 施工中的展厅（tone-paper + 虚线装裱）。
+ */
+import type { Stage } from '../data/stages';
+import { projectsByStage } from '../data/projects';
+import MediaSlot from './MediaSlot.astro';
+import ProjectPlate from './ProjectPlate.astro';
+import StatusBadge from './StatusBadge.astro';
+
+interface Props {
+  stage: Stage;
+}
+
+const { stage } = Astro.props;
+const prep = stage.status === 'preparing';
+const list = projectsByStage(stage.id);
+---
+
+<section
+  class:list={['chapter', prep ? 'tone-paper chapter--prep' : 'tone-ink']}
+  id={`stage-${stage.id}`}
+  aria-labelledby={`stage-${stage.id}-title`}
+>
+  <div class="container">
+    <header class="chapter__head reveal">
+      <p class="eyebrow">展厅 {stage.numeral} · HALL {stage.numeral}</p>
+      <h2 id={`stage-${stage.id}-title`}>{stage.name}</h2>
+      <StatusBadge status={stage.status} />
+    </header>
+
+    <MediaSlot id={stage.leadSlot} class="reveal" />
+
+    <div class="chapter__body">
+      <p class="chapter__summary reading reveal">
+        {stage.summary}
+      </p>
+      <div class="chapter__plates reveal" style="--i:1">
+        {list.map((p, i) => (
+          <ProjectPlate project={p} index={`${stage.numeral}.${i + 1}`} prep={prep} />
+        ))}
+      </div>
+    </div>
+
+    {prep && (
+      <p class="chapter__notice">
+        本展厅处于筹备阶段：仅呈现策划方向与准备事项，不含现场纪实、采访实录或已完成成果。
+      </p>
+    )}
+  </div>
+</section>

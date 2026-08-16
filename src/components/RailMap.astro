@@ -1,0 +1,117 @@
+---
+/**
+ * 展线总图：首页的「总主题 → 三阶段 → 六项目」层级图。
+ * 展厅 = 站点（圆点），项目 = 展台（方钉，取项目识别色）。
+ * 已开展 = 实心；筹备中 = 虚线空心。可点击跳转。
+ */
+import { stages, statusLabel } from '../data/stages';
+import { projectsByStage } from '../data/projects';
+import { href } from '../utils/paths';
+
+/** 版面几何（viewBox 1200×300） */
+const MAIN_Y = 80;    // 主线高度
+const FORK_Y = 150;   // 分线横杠高度
+const NODE_Y = 195;   // 项目节点行
+const STATUS_GAP_TOP = 101;    // 为阶段状态文字留出净空
+const STATUS_GAP_BOTTOM = 126;
+const stationX: Record<string, number> = {
+  '2025-summer': 190,
+  '2026-winter': 560,
+  '2026-summer': 950,
+};
+
+const hallLabel: Record<string, string> = {
+  '2025-summer': 'Ⅰ',
+  '2026-winter': 'Ⅱ',
+  '2026-summer': 'Ⅲ',
+};
+
+const nodes = stages.map((stage) => ({
+  stage,
+  x: stationX[stage.id],
+  prep: stage.status === 'preparing',
+  projects: projectsByStage(stage.id).map((p, i, arr) => ({
+    p,
+    x: stationX[stage.id] + (i - (arr.length - 1) / 2) * 150,
+  })),
+}));
+---
+
+<svg
+  class="railmap"
+  viewBox="0 0 1200 300"
+  role="img"
+  aria-label="展线总图：总主题下设三个实践阶段，六个项目分属三个阶段"
+>
+  <!-- 主线 -->
+  <line class="railmap__mainline" x1="50" y1={MAIN_Y} x2="1150" y2={MAIN_Y} />
+
+  {nodes.map(({ stage, x, prep, projects: plist }) => (
+    <g>
+      <!-- 站点 -->
+      <a href={`#stage-${stage.id}`} aria-label={`${stage.name}（${statusLabel[stage.status]}），跳到本页对应展厅`}>
+        <text class="railmap__mono railmap__status" x={x} y="26" text-anchor="middle" font-size="11" letter-spacing="2">
+          展厅 {hallLabel[stage.id]}
+        </text>
+        <text x={x} y="52" text-anchor="middle" font-size="16" font-weight="700" class="railmap__node-label">
+          {stage.name}
+        </text>
+        {prep ? (
+          <circle class="railmap__station--prep" cx={x} cy={MAIN_Y} r="10" />
+        ) : (
+          <circle class="railmap__station" cx={x} cy={MAIN_Y} r="10" />
+        )}
+        <text class="railmap__mono railmap__status" x={x} y="116" text-anchor="middle" font-size="11">
+          {statusLabel[stage.status]}
+        </text>
+      </a>
+
+      <!-- 分线 -->
+      <line
+        class:list={['railmap__drop', { 'railmap__drop--prep': prep }]}
+        x1={x} y1={MAIN_Y + 10} x2={x} y2={STATUS_GAP_TOP}
+      />
+      <line
+        class:list={['railmap__drop', { 'railmap__drop--prep': prep }]}
+        x1={x} y1={STATUS_GAP_BOTTOM} x2={x} y2={FORK_Y}
+      />
+      {plist.length > 1 && (
+        <line
+          class:list={['railmap__drop', { 'railmap__drop--prep': prep }]}
+          x1={plist[0].x} y1={FORK_Y} x2={plist[plist.length - 1].x} y2={FORK_Y}
+        />
+      )}
+
+      <!-- 展台 -->
+      {plist.map(({ p, x: px }) => (
+        <g>
+          <line
+            class:list={['railmap__drop', { 'railmap__drop--prep': prep }]}
+            x1={px} y1={FORK_Y} x2={px} y2={NODE_Y - 8}
+          />
+          <a href={href(`projects/${p.slug}/`)} aria-label={`${p.name}（${stage.name}，${statusLabel[p.status]}）`}>
+            <rect
+              x={px - 6} y={NODE_Y - 6} width="12" height="12"
+              style={`fill: ${p.color.base};`}
+            />
+            <text x={px} y={NODE_Y + 32} text-anchor="middle" font-size="14" font-weight="700" class="railmap__node-label">
+              {p.shortName}
+            </text>
+            <text class="railmap__mono railmap__status" x={px} y={NODE_Y + 52} text-anchor="middle" font-size="10">
+              {statusLabel[p.status]}
+            </text>
+          </a>
+        </g>
+      ))}
+    </g>
+  ))}
+
+  <!-- 图例 -->
+  <g class="railmap__mono railmap__status" font-size="11">
+    <rect x="50" y="272" width="10" height="10" style="fill: var(--text-on-paper);" />
+    <text x="68" y="281">已开展</text>
+    <rect x="130" y="272" width="10" height="10" style="fill: none; stroke: var(--text-on-paper); stroke-dasharray: 3 3;" />
+    <text x="148" y="281">筹备中</text>
+    <text x="1150" y="281" text-anchor="end">总主题 → 三个展厅 → 六个展间</text>
+  </g>
+</svg>

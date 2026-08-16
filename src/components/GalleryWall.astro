@@ -1,0 +1,29 @@
+---
+import slotsData from '../data/media-slots.json';
+import { mediaForSlot } from '../data/media';
+import { href } from '../utils/paths';
+interface Props { id: string; title: string; }
+const { id, title } = Astro.props;
+const slot = slotsData.slots.find((item) => item.id === id);
+if (!slot || slot.type !== 'image-collection') throw new Error(`GalleryWall：插槽 ID「${id}」未登记为影像组。`);
+const items = mediaForSlot(id);
+---
+
+<div class="gallery-wall" data-lightbox-group={id}>
+  {items.map((item, index) => (
+    <button class="gallery-wall__item" type="button" data-lightbox data-src={href(item.src)} data-alt={item.alt} data-caption={item.caption ?? item.alt}>
+      <img src={href(item.src)} width={item.width} height={item.height} loading="lazy" decoding="async" alt={item.alt} />
+      <span>{String(index + 1).padStart(2, '0')} · {item.caption ?? title}</span>
+    </button>
+  ))}
+</div>
+
+<style>
+  .gallery-wall { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+  .gallery-wall__item { align-self: start; width: 100%; min-width: 0; max-width: 100%; padding: 0; border: 1px solid var(--hairline-on-ink); border-radius: var(--radius); background: var(--ink-raise); color: var(--muted-on-ink); text-align: left; cursor: zoom-in; overflow: hidden; }
+  .gallery-wall__item:hover { border-color: var(--text-on-ink); }
+  .gallery-wall__item img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: auto; object-fit: contain; }
+  .gallery-wall__item span { display: block; padding: var(--space-2) var(--space-3); overflow-wrap: anywhere; font: var(--text-xs) var(--font-label); }
+  @media (max-width: 48rem) { .gallery-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 30rem) { .gallery-wall { grid-template-columns: minmax(0, 1fr); } }
+</style>

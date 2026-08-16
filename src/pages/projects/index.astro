@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectPlate from '../../components/ProjectPlate.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { stages } from '../../data/stages';
+import { projectsByStage } from '../../data/projects';
+---
+
+<BaseLayout title="实践项目 · 七彩云南·铁脉同行">
+  <main id="main" class="projects-page tone-paper">
+    <header class="page-intro container"><p class="eyebrow">GUIDE · 展间导览</p><h1>实践项目</h1><p class="reading">项目按所属实践阶段进入三个展厅。每个入口标明项目状态与识别色，便于沿实践脉络浏览。</p></header>
+    {stages.map((stage) => (
+      <section class:list={['project-stage', stage.status === 'preparing' ? 'tone-paper project-stage--prep' : 'tone-ink']} id={`stage-${stage.id}`}>
+        <div class="container">
+          <header class="project-stage__head"><div class="project-stage__rail" aria-hidden="true"><span></span></div><p class="eyebrow">展厅 {stage.numeral}</p><h2>{stage.name}</h2><StatusBadge status={stage.status} /></header>
+          <div class="chapter__plates">{projectsByStage(stage.id).map((project, index) => <ProjectPlate project={project} index={`${stage.numeral}.${index + 1}`} prep={stage.status === 'preparing'} full />)}</div>
+        </div>
+      </section>
+    ))}
+  </main>
+</BaseLayout>
+
+<style>
+  .projects-page { padding-top: 4rem; }
+  .page-intro { padding-block: var(--space-9); display: grid; gap: var(--space-4); }
+  .page-intro h1 { font-size: var(--text-hero); }
+  .page-intro > p:last-child { color: var(--muted-on-paper); }
+  .project-stage { padding-block: var(--space-8); }
+  .project-stage__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3) var(--space-5); margin-bottom: var(--space-6); }
+  .project-stage__head .eyebrow, .project-stage__rail { flex-basis: 100%; }
+  .project-stage__head h2 { font-size: var(--text-2xl); }
+  .project-stage__rail { height: 2px; background: var(--steel); position: relative; }
+  .project-stage__rail span { position: absolute; left: 12%; top: 50%; width: 16px; height: 16px; border-radius: 50%; background: currentColor; transform: translate(-50%, -50%); }
+  .project-stage--prep { border-block: 1px dashed var(--hairline-on-paper); }
+  .project-stage--prep .project-stage__rail { background: repeating-linear-gradient(90deg, var(--steel) 0 6px, transparent 6px 12px); }
+  .project-stage--prep .project-stage__rail span { background: var(--paper); border: 2px dashed currentColor; }
+</style>

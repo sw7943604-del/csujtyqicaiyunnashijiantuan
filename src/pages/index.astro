@@ -1,0 +1,89 @@
+---
+/**
+ * 首页：序厅 → 展线总图 → 三个展厅 → 尾声。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MediaSlot from '../components/MediaSlot.astro';
+import RailMap from '../components/RailMap.astro';
+import RailSpine from '../components/RailSpine.astro';
+import StageChapter from '../components/StageChapter.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import { stages } from '../data/stages';
+import { site } from '../data/site';
+import { href } from '../utils/paths';
+---
+
+<BaseLayout title={`${site.name} · 首页`}>
+  <RailSpine />
+
+  <main id="main">
+    <!-- 序厅 -->
+    <section class="prologue tone-ink" id="prologue" aria-labelledby="prologue-title">
+      <MediaSlot id="home.hero" variant="hero" />
+      <div class="prologue__overlay container">
+        <p class="eyebrow">高校社会实践成果展示 · 影像展</p>
+        <h1 id="prologue-title">{site.name}</h1>
+        <p class="prologue__lede">
+          沿云南铁路脉络展开的三个实践阶段、六个实践项目——以一场影像展的形式，呈现实践脉络、项目内容、影像档案与成果。
+        </p>
+        <ul class="prologue__stages" aria-label="三个实践阶段及其状态">
+          {stages.map((s) => (
+            <li>
+              <span class="numeral" aria-hidden="true">{s.numeral}</span>
+              <span>{s.name}</span>
+              <StatusBadge status={s.status} />
+            </li>
+          ))}
+        </ul>
+        <a class="prologue__cue" href="#railmap">
+          沿展线进站 <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 展线总图 -->
+    <section class="railmap-section tone-paper" id="railmap" aria-labelledby="railmap-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">参观动线 · EXHIBITION ROUTE</p>
+          <h2 id="railmap-title">展线总图</h2>
+          <p class="reading">
+            一个总主题，三个展厅，六个展间。已开展的展厅亮灯，筹备中的展厅仍在施工——点选站点或展台，可直接抵达对应章节。
+          </p>
+        </header>
+        <div class="railmap-scroll reveal" style="--i:1">
+          <RailMap />
+        </div>
+      </div>
+    </section>
+
+    <!-- 三个展厅（阶段章节，按状态自动分流深/施工视觉） -->
+    {stages.map((stage) => <StageChapter stage={stage} />)}
+
+    <!-- 尾声 -->
+    <section class="finale tone-paper" id="finale" aria-labelledby="finale-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">展后 · AFTER THE GALLERIES</p>
+          <h2 id="finale-title">影像档案与成果</h2>
+        </header>
+        <div class="finale__list reveal" style="--i:1">
+          <a class="finale__item" href={href('archive/')}>
+            <span class="finale__title">影像档案</span>
+            <span class="finale__desc">
+              按阶段、项目与媒介类型检索已经授权并完成核验的照片与视频。
+            </span>
+            <span class="finale__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="finale__item" href={href('outcomes/')}>
+            <span class="finale__title">成果</span>
+            <span class="finale__desc">
+              明确区分“已形成成果”“正在整理”与“未来计划”，不把预期说成已经取得。
+            </span>
+            <span class="finale__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

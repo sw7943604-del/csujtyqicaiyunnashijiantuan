@@ -1,0 +1,41 @@
+---
+import { stages } from '../data/stages';
+import { projectsByStage } from '../data/projects';
+import { href } from '../utils/paths';
+interface Props { current: string; }
+const { current } = Astro.props;
+---
+
+<nav class="rail-mini" aria-label="六个项目展线">
+  {stages.map((stage) => (
+    <section class="rail-mini__stage" aria-label={stage.name}>
+      <a class="rail-mini__hall" href={href(`timeline/#timeline-stage-${stage.id}`)}>
+        <span aria-hidden="true" class:list={['rail-mini__station', { 'is-prep': stage.status === 'preparing' }]}></span>
+        展厅 {stage.numeral}
+      </a>
+      <div class="rail-mini__projects">
+        {projectsByStage(stage.id).map((project) => (
+          <a
+            href={href(`projects/${project.slug}/`)}
+            class:list={['rail-mini__project', { 'is-current': project.slug === current }]}
+            aria-current={project.slug === current ? 'page' : undefined}
+            style={`--project: ${project.color.base};`}
+          ><span aria-hidden="true"></span>{project.shortName}</a>
+        ))}
+      </div>
+    </section>
+  ))}
+</nav>
+
+<style>
+  .rail-mini { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 2px solid var(--rail); gap: var(--space-5); padding-top: var(--space-4); }
+  .rail-mini__stage { display: grid; gap: var(--space-3); }
+  .rail-mini__hall { display: inline-flex; align-items: center; gap: var(--space-2); font: var(--text-xs) var(--font-label); }
+  .rail-mini__station { width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
+  .rail-mini__station.is-prep { background: none; border: 1px dashed currentColor; }
+  .rail-mini__projects { display: grid; gap: var(--space-2); }
+  .rail-mini__project { min-height: 44px; display: flex; align-items: center; gap: var(--space-2); color: var(--muted-on-paper); font-size: var(--text-sm); }
+  .rail-mini__project span { width: 9px; height: 9px; background: var(--project); flex: none; }
+  .rail-mini__project.is-current { color: var(--text-on-paper); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+  @media (max-width: 40rem) { .rail-mini { grid-template-columns: 1fr; border-top: 0; } .rail-mini__stage { border-top: 1px solid var(--hairline-on-paper); padding-top: var(--space-3); } }
+</style>

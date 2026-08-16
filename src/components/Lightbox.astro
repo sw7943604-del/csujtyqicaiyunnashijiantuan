@@ -1,0 +1,69 @@
+<dialog class="lightbox" data-lightbox-dialog aria-modal="true" aria-labelledby="lightbox-title">
+  <div class="lightbox__bar">
+    <p id="lightbox-title">主题影像</p>
+    <p data-lightbox-count aria-live="polite"></p>
+    <button type="button" data-lightbox-close aria-label="关闭影像灯箱">关闭</button>
+  </div>
+  <div class="lightbox__stage">
+    <button type="button" data-lightbox-prev aria-label="上一张影像">上一张</button>
+    <figure><img data-lightbox-image alt="" /><figcaption data-lightbox-caption></figcaption></figure>
+    <button type="button" data-lightbox-next aria-label="下一张影像">下一张</button>
+  </div>
+</dialog>
+
+<script>
+  const bindLightbox = () => {
+    const dialog = document.querySelector('[data-lightbox-dialog]');
+    if (!(dialog instanceof HTMLDialogElement) || dialog.dataset.bound) return;
+    dialog.dataset.bound = 'true';
+    const image = dialog.querySelector('[data-lightbox-image]');
+    const caption = dialog.querySelector('[data-lightbox-caption]');
+    const count = dialog.querySelector('[data-lightbox-count]');
+    let items = [];
+    let index = 0;
+    let opener;
+    const show = (next) => {
+      index = (next + items.length) % items.length;
+      const item = items[index];
+      image.src = item.dataset.src;
+      image.alt = item.dataset.alt || '';
+      caption.textContent = item.dataset.caption || '';
+      count.textContent = `${index + 1}/${items.length}`;
+    };
+    document.addEventListener('click', (event) => {
+      const trigger = event.target.closest('[data-lightbox]');
+      if (!trigger) return;
+      opener = trigger;
+      const group = trigger.closest('[data-lightbox-group]');
+      items = [...group.querySelectorAll('[data-lightbox]')];
+      show(items.indexOf(trigger));
+      dialog.showModal();
+      dialog.querySelector('[data-lightbox-close]').focus();
+    });
+    dialog.querySelector('[data-lightbox-close]').addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-lightbox-prev]').addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-lightbox-next]').addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('close', () => opener?.focus());
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') dialog.close();
+      if (event.key === 'ArrowLeft') show(index - 1);
+      if (event.key === 'ArrowRight') show(index + 1);
+    });
+  };
+  bindLightbox();
+  document.addEventListener('astro:page-load', bindLightbox);
+</script>
+
+<style>
+  .lightbox { width: min(92vw, 75rem); max-width: none; padding: 0; border: 1px solid var(--hairline-on-ink); background: var(--ink); color: var(--text-on-ink); }
+  .lightbox::backdrop { background: rgb(0 0 0 / .88); }
+  .lightbox__bar { min-height: 56px; display: flex; align-items: center; gap: var(--space-4); padding: var(--space-2) var(--space-4); border-bottom: 1px solid var(--hairline-on-ink); font: var(--text-xs) var(--font-label); }
+  .lightbox__bar p:first-child { margin-right: auto; }
+  .lightbox button { min-width: 44px; min-height: 44px; border: 1px solid var(--hairline-on-ink); background: none; color: inherit; cursor: pointer; }
+  .lightbox__stage { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-3); padding: var(--space-4); }
+  .lightbox figure { margin: 0; text-align: center; }
+  .lightbox img { max-height: 76vh; margin: auto; }
+  .lightbox figcaption { margin-top: var(--space-2); font: var(--text-xs) var(--font-label); color: var(--muted-on-ink); }
+  @media (max-width: 40rem) { .lightbox__stage { grid-template-columns: 1fr 1fr; } .lightbox figure { grid-column: 1 / -1; grid-row: 1; } }
+</style>

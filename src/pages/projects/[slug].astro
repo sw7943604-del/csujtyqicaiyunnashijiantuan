@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import GalleryWall from '../../components/GalleryWall.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import MediaSlot from '../../components/MediaSlot.astro';
+import RailMini from '../../components/RailMini.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { projects, type Project } from '../../data/projects';
+import { stages } from '../../data/stages';
+import { projectVideos } from '../../data/media';
+import { href } from '../../utils/paths';
+
+export function getStaticPaths() { return projects.map((project) => ({ params: { slug: project.slug }, props: { project } })); }
+const { project } = Astro.props as { project: Project };
+const stage = stages.find((item) => item.id === project.stageId)!;
+const conducted = project.status === 'conducted';
+const videos = projectVideos(project.slug);
+---
+
+<BaseLayout title={`${project.name} · 七彩云南·铁脉同行`}>
+  <main id="main" class:list={['project-page', conducted ? 'project-page--conducted' : 'project-page--prep']} style={`--project: ${project.color.base}; --project-tint: ${project.color.tint};`}>
+    <header class="project-hero tone-ink"><div class="container"><Breadcrumb stageId={stage.id} stageName={stage.name} projectName={project.name} /><div class="project-door"><span class="project-door__bar" aria-hidden="true"></span><p class="eyebrow">展厅 {stage.numeral} · 项目展间</p><h1>{project.name}</h1><div class="project-door__meta"><StatusBadge status={project.status} /><a href={href(`timeline/#timeline-stage-${stage.id}`)}>{stage.name}</a></div>{!conducted && <strong class="project-door__ribbon">筹备中</strong>}</div></div></header>
+    {conducted ? (
+      <>
+        <section class="project-media tone-ink"><div class="container"><MediaSlot id={`project.${project.slug}.hero`} /></div></section>
+        <section class="project-reading tone-paper"><div class="container reading"><p class="eyebrow">PROJECT NOTE</p><h2>项目概述</h2><p>{project.summary}</p></div></section>
+        <section class="project-reading tone-paper"><div class="container reading"><p class="eyebrow">PROCESS</p><h2>实践过程</h2><ol class="fact-list">{project.process.map((item) => <li>{item}</li>)}</ol></div></section>
+        <section class="project-gallery tone-ink"><div class="container"><div class="section-head"><p class="eyebrow">IMAGE WALL</p><h2>主题影像墙</h2><p>以下影像均来自对应阶段的授权实践素材，可点击查看大图。</p></div><GalleryWall id={`project.${project.slug}.gallery`} title={project.name} /></div></section>
+        <section class="project-reading tone-paper"><div class="container reading"><p class="eyebrow">OUTCOMES</p><h2>已形成成果</h2><ul class="fact-list">{project.outcomes.map((item) => <li>{item}</li>)}</ul></div></section>
+        {videos.length > 0 && <section class="project-videos tone-ink"><div class="container"><div class="section-head"><p class="eyebrow">VIDEO ARCHIVE</p><h2>视频展映</h2><p>视频默认不播放；点击控件后按需加载。</p></div><div class="video-grid">{videos.map((video) => <figure><video controls playsinline preload="metadata" poster={video.poster ? href(video.poster) : undefined} width={video.width} height={video.height} aria-label={video.alt}><source src={href(video.src)} type="video/mp4" /></video><figcaption>{video.caption ?? video.alt}</figcaption></figure>)}</div></div></section>}
+      </>
+    ) : (
+      <>
+        <section class="project-media tone-paper"><div class="container"><MediaSlot id={`project.${project.slug}.preparation`} /></div></section>
+        <section class="prep-module tone-paper"><div class="container reading"><p class="eyebrow">PREPARATION</p><h2>拟开展方向</h2><ul class="fact-list">{project.direction.map((item) => <li>{item}</li>)}</ul></div></section>
+        <section class="prep-module tone-paper"><div class="container reading"><p class="eyebrow">ROUTE DRAFT</p><h2>初步路线与工作框架</h2><ul class="fact-list">{project.route.map((item) => <li>{item}</li>)}</ul></div></section>
+        <section class="prep-module tone-paper"><div class="container reading"><p class="eyebrow">CHECKLIST</p><h2>准备事项</h2><ul class="fact-list">{project.preparation.map((item) => <li>{item}</li>)}</ul><p class="prep-note">以上均为筹备信息，不代表活动已经开展或成果已经形成。</p></div></section>
+      </>
+    )}
+    <section class="project-exit tone-paper"><div class="container"><div class="section-head"><p class="eyebrow">ROUTE POSITION</p><h2>当前展线位置</h2></div><RailMini current={project.slug} /><div class="project-exit__links">{conducted && <a href={href(`team/#stage-${stage.id}`)}>查看本阶段团队名录</a>}<a href={href(`timeline/#timeline-stage-${stage.id}`)}>返回本阶段</a></div></div></section>
+    {conducted && <Lightbox />}
+  </main>
+</BaseLayout>
+
+<style>
+  .project-page { padding-top: 4rem; background: var(--paper); color: var(--text-on-paper); }
+  .project-hero { padding-block: var(--space-6) var(--space-8); }
+  .project-door { position: relative; display: grid; gap: var(--space-4); margin-top: var(--space-7); padding-left: var(--space-5); }
+  .project-door__bar { position: absolute; inset-block: 0; left: 0; width: 4px; background: var(--project); }
+  .project-door h1 { max-width: 15ch; font-size: var(--text-hero); }
+  .project-door__meta { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; color: var(--muted-on-ink); }
+  .project-door__meta a { text-decoration: underline; text-underline-offset: 4px; }
+  .project-door__ribbon { width: fit-content; padding: var(--space-2) var(--space-4); border: 1px dashed var(--project-tint); color: var(--project-tint); font: var(--text-sm) var(--font-label); letter-spacing: .14em; }
+  .project-media { padding-bottom: var(--space-8); overflow-x: clip; }
+  .project-page--prep .project-media { padding-block: var(--space-8); }
+  .project-reading, .prep-module, .project-gallery, .project-videos, .project-exit { padding-block: var(--space-8); }
+  .project-reading + .project-reading, .prep-module + .prep-module { border-top: 1px solid var(--hairline-on-paper); }
+  .project-reading h2, .prep-module h2 { margin-block: var(--space-3) var(--space-5); font-size: var(--text-2xl); }
+  .project-reading > div > p:last-of-type { color: var(--muted-on-paper); }
+  .fact-list { display: grid; gap: var(--space-3); padding-left: 1.25rem; color: var(--muted-on-paper); }
+  .fact-list li::marker { color: var(--project); font-weight: 700; }
+  .prep-note { margin-top: var(--space-5); padding: var(--space-3) var(--space-4); border-left: 3px solid var(--project); background: color-mix(in srgb, var(--project) 7%, transparent); }
+  .project-page--prep .prep-module { border-top-style: dashed; }
+  .project-gallery { border-block: 1px solid var(--hairline-on-ink); }
+  .project-videos { border-bottom: 1px solid var(--hairline-on-ink); }
+  .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--space-5); align-items: start; }
+  .video-grid figure { margin: 0; padding: var(--space-3); border: 1px solid var(--hairline-on-ink); background: var(--ink-raise); }
+  .video-grid video { width: 100%; max-height: 70svh; background: #000; object-fit: contain; }
+  .video-grid figcaption { padding-top: var(--space-3); color: var(--muted-on-ink); font: var(--text-sm) var(--font-label); }
+  .project-exit { border-top: 1px solid var(--hairline-on-paper); }
+  .project-exit__links { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-6); }
+  .project-exit__links a { min-height: 44px; display: inline-flex; align-items: center; padding: var(--space-2) var(--space-4); border: 1px solid var(--hairline-on-paper); }
+  .project-exit__links a:hover { border-color: var(--text-on-paper); }
+</style>
