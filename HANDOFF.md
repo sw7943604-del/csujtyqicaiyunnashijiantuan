@@ -276,3 +276,12 @@ npm run preview    # 预览 dist，http://localhost:4321
 - 阶段、项目、媒介类型三组筛选继续采用 AND 逻辑；筛选后没有可见媒体的 Part 和项目会自动隐藏。
 - 浏览器实测“视频”筛选仅显示“滇中寻红”“滇南薪传”及各自微课区，共 6 条视频；移动端页面 `scrollWidth === clientWidth`，无横向溢出，控制台无警告或错误。
 - 新增 `tests/archive-grouping.test.mjs`；最新 `npm run verify` 为 33/33 测试通过，13 页构建及隐私、内容、链接检查全部通过。
+
+## 19. GitHub Pages 部署
+
+- 公开仓库：`https://github.com/sw7943604-del/csujtyqicaiyunnashijiantuan`
+- 线上站点：`https://sw7943604-del.github.io/csujtyqicaiyunnashijiantuan/`
+- `.github/workflows/deploy-pages.yml` 在 `main` 分支推送后自动使用 `SITE_BASE=/csujtyqicaiyunnashijiantuan/` 验证、构建并部署 `dist`。
+- Pages 发布源为 GitHub Actions，HTTPS 已启用；线上首页、子路径导航、主图和样式资源均已实测加载成功，控制台无错误。
+- `scripts/check-links.mjs` 已支持 `SITE_BASE` 仓库子路径映射；最新子路径完整验证为 34/34 测试、13 页构建、隐私/内容/链接检查全部通过。
+- `csujtyqicaiyunnashijiantuan` 当前是仓库名，不是独立域名。若后续购买或已有域名，需要在仓库 Pages 设置中填写完整域名，并在域名服务商处配置 DNS。
