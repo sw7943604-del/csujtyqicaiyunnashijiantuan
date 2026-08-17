@@ -285,3 +285,11 @@ npm run preview    # 预览 dist，http://localhost:4321
 - Pages 发布源为 GitHub Actions，HTTPS 已启用；线上首页、子路径导航、主图和样式资源均已实测加载成功，控制台无错误。
 - `scripts/check-links.mjs` 已支持 `SITE_BASE` 仓库子路径映射；最新子路径完整验证为 34/34 测试、13 页构建、隐私/内容/链接检查全部通过。
 - `csujtyqicaiyunnashijiantuan` 当前是仓库名，不是独立域名。若后续购买或已有域名，需要在仓库 Pages 设置中填写完整域名，并在域名服务商处配置 DNS。
+
+## 20. 访客统计更换为 Vercount
+
+- 不蒜子对 `sw7943604-del.github.io` 返回“域名过长，已被禁用”，因此旧统计始终降级为“暂不可用”；这不是 GitHub Pages 或页面元素故障。
+- 已用 Vercount 替换不蒜子：页脚继续显示“累计访客 / 累计访问”，加载失败仍降级为“暂不可用”。
+- Vercount 脚本位于页脚计数节点之后，并带 `data-astro-rerun`，确保 Astro 客户端页面转场后重新绑定并记录新页面访问。
+- 当前 GitHub Pages URL 已直接请求 Vercount API 验证成功，返回数值型 `site_uv/site_pv/page_pv`，没有域名长度限制。
+- 新服务从零开始累计，旧服务未成功建立的数字无法迁移；最新仓库子路径完整验证为 34/34 测试通过。

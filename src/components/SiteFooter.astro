@@ -14,8 +14,8 @@ import { href } from '../utils/paths';
         本站仅展示完成授权与隐私核验的实践材料。2026 年暑期实践的三个项目处于筹备阶段，相关内容仅为策划方向。
       </p>
       <div class="site-footer__counter" aria-label="匿名访客统计">
-        <span>累计访客 <strong id="busuanzi_site_uv">加载中</strong> 人</span>
-        <span>累计访问 <strong id="busuanzi_site_pv">加载中</strong> 次</span>
+        <span>累计访客 <strong id="vercount_value_site_uv">加载中</strong> 人</span>
+        <span>累计访问 <strong id="vercount_value_site_pv">加载中</strong> 次</span>
       </div>
       <p class="site-footer__privacy">统计由第三方匿名计数服务提供；加载失败时显示“暂不可用”。</p>
     </div>
@@ -27,18 +27,20 @@ import { href } from '../utils/paths';
   </div>
 </footer>
 
+<script is:inline src="https://events.vercount.one/js" defer data-astro-rerun></script>
+
 <script is:inline>
   const normalizeVisitorCount = (value) => {
     const text = value.textContent?.trim() ?? '';
     if (text !== '加载中' && text !== '暂不可用' && !/^\d[\d,.KWE万]*$/i.test(text)) value.textContent = '暂不可用';
   };
-  ['busuanzi_site_uv', 'busuanzi_site_pv'].forEach((id) => {
+  ['vercount_value_site_uv', 'vercount_value_site_pv'].forEach((id) => {
     const value = document.getElementById(id);
     if (!value) return;
     new MutationObserver(() => normalizeVisitorCount(value)).observe(value, { childList: true, characterData: true, subtree: true });
   });
   window.setTimeout(() => {
-    ['busuanzi_site_uv', 'busuanzi_site_pv'].forEach((id) => {
+    ['vercount_value_site_uv', 'vercount_value_site_pv'].forEach((id) => {
       const value = document.getElementById(id);
       if (value) {
         normalizeVisitorCount(value);

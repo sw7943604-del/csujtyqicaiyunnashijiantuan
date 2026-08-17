@@ -4,17 +4,19 @@ import test from 'node:test';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('页脚接入全站访客数与访问量并提供加载失败降级', async () => {
+test('页脚使用 Vercount 显示访客数与访问量并支持页面转场重载', async () => {
   const [footer, layout] = await Promise.all([
     read('src/components/SiteFooter.astro'),
     read('src/layouts/BaseLayout.astro'),
   ]);
-  assert.match(footer, /busuanzi_site_uv/);
-  assert.match(footer, /busuanzi_site_pv/);
+  assert.match(footer, /vercount_value_site_uv/);
+  assert.match(footer, /vercount_value_site_pv/);
   assert.match(footer, /暂不可用/);
   assert.match(footer, /MutationObserver/);
   assert.match(footer, /normalizeVisitorCount/);
-  assert.match(layout, /cdn\.busuanzi\.cc/);
+  assert.match(footer, /events\.vercount\.one\/js/);
+  assert.match(footer, /data-astro-rerun/);
+  assert.doesNotMatch(layout, /cdn\.busuanzi\.cc/);
 });
 
 test('影像墙保留图片原始方向而非强制裁成横图', async () => {
