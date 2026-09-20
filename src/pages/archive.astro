@@ -7,7 +7,7 @@ import { projects } from '../data/projects';
 import { media } from '../data/media';
 import { href } from '../utils/paths';
 const visibleMedia = media.filter((item) => item.verified);
-const projectGroups = projects
+const projectGroups = [...projects].reverse()
   .map((project) => ({ project, items: visibleMedia.filter((item) => item.project === project.slug) }))
   .filter(({ items }) => items.length > 0);
 const mediaParts = [

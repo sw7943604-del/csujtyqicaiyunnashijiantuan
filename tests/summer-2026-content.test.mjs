@@ -42,3 +42,9 @@ test('页脚与关于页不再沿用 2026 暑期筹备口径', async () => {
   assert.match(footer, /六个实践项目均已开展/);
   assert.match(about, /三个实践阶段均已开展/);
 });
+
+test('2026 暑期阶段合影和语路通达主图使用指定原片', async () => {
+  const prepare = await read('scripts/prepare-summer-2026-media.py');
+  assert.match(prepare, /"stage-lead\.webp":\s*PHOTO_ROOT\s*\/\s*"甸尾乡"\s*\/\s*"IMG_2740\.JPG"/);
+  assert.match(prepare, /"yulu-hero\.webp":\s*PHOTO_ROOT\s*\/\s*"金鸡寨"\s*\/\s*"IMG_2610\.JPG"/);
+});

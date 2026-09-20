@@ -23,3 +23,8 @@ test('筛选后隐藏没有可见媒体的分类和项目', async () => {
   assert.match(source, /part\.hidden\s*=\s*!part\.querySelector\('\[data-archive-item\]:not\(\[hidden\]\)'\)/);
   assert.match(source, /projectGroup\.hidden\s*=\s*!projectGroup\.querySelector\('\[data-archive-item\]:not\(\[hidden\]\)'\)/);
 });
+
+test('影像档案优先展示最新实践项目', async () => {
+  const source = await readArchive();
+  assert.match(source, /\[\.\.\.projects\]\.reverse\(\)/);
+});

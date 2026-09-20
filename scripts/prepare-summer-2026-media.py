@@ -11,7 +11,7 @@ OUTPUT = Path(__file__).resolve().parent.parent / "public" / "media" / "2026-sum
 FFMPEG = Path(r"H:\tools\ffmpeg\ffmpeg-9.0.1-essentials_build\bin\ffmpeg.exe")
 
 PHOTOS = {
-    "stage-lead.webp": PHOTO_ROOT / "甸尾乡" / "IMG_2738.JPG",
+    "stage-lead.webp": PHOTO_ROOT / "甸尾乡" / "IMG_2740.JPG",
     "chongzou-hero.webp": PHOTO_ROOT / "中老铁路" / "IMG_2435.JPG",
     "chongzou-train.webp": PHOTO_ROOT / "中老铁路" / "IMG_2441.JPG",
     "chongzou-station.webp": PHOTO_ROOT / "中老铁路" / "IMG_2444.JPG",
@@ -26,7 +26,7 @@ PHOTOS = {
     "fazhi-service.webp": PHOTO_ROOT / "金鸡寨" / "IMG_2594.JPG",
     "fazhi-group.webp": PHOTO_ROOT / "金鸡寨" / "IMG_2601.JPG",
     "fazhi-dialogue.webp": PHOTO_ROOT / "金鸡寨" / "IMG_2634.JPG",
-    "yulu-hero.webp": PHOTO_ROOT / "甸尾乡" / "IMG_2738.JPG",
+    "yulu-hero.webp": PHOTO_ROOT / "金鸡寨" / "IMG_2610.JPG",
     "yulu-interview.webp": PHOTO_ROOT / "甸尾乡" / "IMG_2692.JPG",
     "yulu-survey.webp": PHOTO_ROOT / "甸尾乡" / "IMG_2698.JPG",
     "yulu-materials.webp": PHOTO_ROOT / "甸尾乡" / "IMG_2702.JPG",
