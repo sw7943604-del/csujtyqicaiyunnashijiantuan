@@ -24,11 +24,8 @@ for (const [name, value] of Object.entries(fixedColors)) {
 for (const match of detail.matchAll(/<MediaSlot\s+id="([^"]+)"/g)) {
   if (!slotIds.has(match[1])) errors.push(`MediaSlot 未登记：${match[1]}`);
 }
-for (const project of ['tiemai-zhuguang','dianzhong-xunhong','diannan-xinchuan']) {
+for (const project of ['tiemai-zhuguang','dianzhong-xunhong','diannan-xinchuan','chongzou-zuji','fazhi-kepu','yulu-tongda']) {
   for (const suffix of ['hero','gallery']) if (!slotIds.has(`project.${project}.${suffix}`)) errors.push(`缺少项目插槽：project.${project}.${suffix}`);
-}
-for (const project of ['chongzou-zuji','fazhi-kepu','yulu-tongda']) {
-  if (!slotIds.has(`project.${project}.preparation`)) errors.push(`缺少筹备插槽：project.${project}.preparation`);
 }
 if (
   !detail.includes("project.status === 'conducted'") ||

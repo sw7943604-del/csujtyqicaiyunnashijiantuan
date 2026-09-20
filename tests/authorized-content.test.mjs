@@ -22,13 +22,18 @@ test('项目数据区分已核验过程成果和筹备计划', async () => {
   assert.match(source, /draft:\s*false/);
 });
 
-test('2026 暑期项目保持筹备状态，不登记现场媒体', async () => {
+test('2026 暑期三个项目均为已开展并登记现场媒体', async () => {
   const [projects, media] = await Promise.all([
     read('src/data/projects.ts'),
     read('src/data/media.ts'),
   ]);
-  assert.match(projects, /stageId:\s*'2026-summer'[\s\S]{0,240}status:\s*'preparing'/);
-  assert.doesNotMatch(media, /stage:\s*'2026-summer'/);
+  for (const slug of ['chongzou-zuji', 'fazhi-kepu', 'yulu-tongda']) {
+    const projectBlock = projects.match(new RegExp(`slug:\\s*'${slug}'[\\s\\S]*?(?=\\n  \\{|\\n\\];)`))?.[0] ?? '';
+    assert.match(projectBlock, /stageId:\s*'2026-summer'/);
+    assert.match(projectBlock, /status:\s*'conducted'/);
+    assert.match(media, new RegExp(`project:\\s*'${slug}'`));
+  }
+  assert.match(media, /stage:\s*'2026-summer'/);
 });
 
 test('团队数据仅登记姓名与阶段', async () => {

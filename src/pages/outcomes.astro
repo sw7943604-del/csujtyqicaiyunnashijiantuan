@@ -13,7 +13,7 @@ const planned = projects.filter((project) => project.status === 'preparing');
       <section><p class="eyebrow">FORMED</p><h2>已形成成果</h2><div class="outcome-grid">{formed.map((project) => <article><h3>{project.name}</h3><ul>{project.outcomes.map((item) => <li>{item}</li>)}</ul></article>)}</div></section>
       <section><p class="eyebrow">TEXT ARCHIVE</p><h2>文字成果</h2><p class="section-note">单列已经形成的调研报告、新闻稿、建议材料与成果登记；此处展示公开摘要，不直接提供含内部信息的源文件。</p><div class="text-outcome-grid">{textOutcomes.map((item) => <article><div class="text-outcome-meta"><span>{item.year}</span><span>{item.type}</span></div><h3>{item.title}</h3><p>{item.summary}</p></article>)}</div></section>
       <section><p class="eyebrow">IN PROGRESS</p><h2>正在整理</h2><p class="section-note">网站持续整理已授权的原始照片、视频、微课与报道索引；尚未完成公开核验的材料不会提前呈现。</p></section>
-      <section><p class="eyebrow">PLANNED</p><h2>未来计划或预期成果</h2><p class="section-note">以下仅为 2026 年暑期筹备方向，不代表已经开展或形成成果。</p><div class="outcome-grid outcome-grid--planned">{planned.map((project) => <article><h3>{project.name}</h3><ul>{project.direction.map((item) => <li>{item}</li>)}</ul></article>)}</div></section>
+      <section><p class="eyebrow">PLANNED</p><h2>未来计划或预期成果</h2>{planned.length > 0 ? <><p class="section-note">仅登记仍处于筹备状态的项目方向，不将计划写成已经形成的成果。</p><div class="outcome-grid outcome-grid--planned">{planned.map((project) => <article><h3>{project.name}</h3><ul>{project.direction.map((item) => <li>{item}</li>)}</ul></article>)}</div></> : <p class="section-note">当前没有处于筹备状态的项目成果。</p>}</section>
     </div>
   </main>
 </BaseLayout>

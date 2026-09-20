@@ -47,10 +47,10 @@ export const stages: Stage[] = [
     id: '2026-summer',
     numeral: 'Ⅲ',
     name: '2026 年暑期实践',
-    status: 'preparing',
-    leadSlot: 'stage.2026-summer.preparation',
+    status: 'conducted',
+    leadSlot: 'stage.2026-summer.lead',
     summary:
-      '本阶段包含“重走足迹”“法治科普”“语路通达”三个项目，目前处于筹备阶段，仅呈现策划方向、主题问题、路线框架与准备事项。',
+      '“重走足迹”“法治科普”“语路通达”在中老铁路沿线、建水基层点位开展交通调研、普法服务与国家通用语言文字推广，形成微课、纪实影像、调研报告、新闻稿和系列文创。',
     draft: false,
   },
 ];

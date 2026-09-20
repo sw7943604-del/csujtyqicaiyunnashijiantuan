@@ -1,7 +1,7 @@
 export interface MediaRecord {
   id: string;
   slotId?: string;
-  stage: '2025-summer' | '2026-winter';
+  stage: '2025-summer' | '2026-winter' | '2026-summer';
   project: string;
   type: 'image' | 'video';
   src: string;
@@ -47,6 +47,37 @@ export const media: MediaRecord[] = [
   { id: 'video-linan', stage: '2026-winter', project: 'diannan-xinchuan', type: 'video', src: 'media/2026-winter/videos/linan-red-memory.mp4', poster: 'media/2026-winter/videos/linan-red-memory.jpg', alt: '《临安红迹·薪火相传：青春的脚步与信仰的回响》视频', width: 1280, height: 720, verified: true, caption: '临安红迹·薪火相传：青春的脚步与信仰的回响' },
   { id: 'video-jianshui', stage: '2026-winter', project: 'diannan-xinchuan', type: 'video', src: 'media/2026-winter/videos/jianshui-red-memory.mp4', poster: 'media/2026-winter/videos/jianshui-red-memory.jpg', alt: '《建水红迹，薪火永传》视频', width: 720, height: 1280, verified: true, caption: '建水红迹，薪火永传' },
   { id: 'video-microcourse', stage: '2026-winter', project: 'diannan-xinchuan', type: 'video', src: 'media/2026-winter/videos/theme-microcourse.mp4', poster: 'media/2026-winter/videos/theme-microcourse.jpg', alt: '滇南薪传主题微课视频', width: 720, height: 1280, verified: true, caption: '滇南薪传主题微课' },
+  image({ id: 'stage-summer-2026-group', slotId: 'stage.2026-summer.lead', stage: '2026-summer', project: 'yulu-tongda', src: 'media/2026-summer/stage-lead.webp', alt: '2026 年暑期实践团队在甸尾乡卫生监督点前合影', width: 1800, height: 1351, caption: '2026 年暑期实践阶段纪实。' }),
+  image({ id: 'chongzou-hero', slotId: 'project.chongzou-zuji.hero', stage: '2026-summer', project: 'chongzou-zuji', src: 'media/2026-summer/chongzou-hero.webp', alt: '中老铁路列车停靠在站台', width: 1800, height: 1351, caption: '沿中老铁路记录云南交通发展。' }),
+  image({ id: 'chongzou-train', slotId: 'project.chongzou-zuji.gallery', stage: '2026-summer', project: 'chongzou-zuji', src: 'media/2026-summer/chongzou-train.webp', alt: '绿色涂装的中老铁路列车', width: 1800, height: 1351, caption: '中老铁路列车与站区观察。' }),
+  image({ id: 'chongzou-station', slotId: 'project.chongzou-zuji.gallery', stage: '2026-summer', project: 'chongzou-zuji', src: 'media/2026-summer/chongzou-station.webp', alt: '玉溪站站台与铁路线路', width: 1800, height: 1351, caption: '中老铁路沿线站场记录。' }),
+  image({ id: 'chongzou-old-street', slotId: 'project.chongzou-zuji.gallery', stage: '2026-summer', project: 'chongzou-zuji', src: 'media/2026-summer/chongzou-old-street.webp', alt: '团队走访建水临安老街', width: 1800, height: 1351, caption: '交通线路之外的地方生活观察。' }),
+  image({ id: 'chongzou-exhibition', slotId: 'project.chongzou-zuji.gallery', stage: '2026-summer', project: 'chongzou-zuji', src: 'media/2026-summer/chongzou-exhibition.webp', alt: '团队查看铁路与地方发展主题展板', width: 1800, height: 1351, caption: '铁路主题资料学习。' }),
+  image({ id: 'chongzou-meeting', slotId: 'project.chongzou-zuji.gallery', stage: '2026-summer', project: 'chongzou-zuji', src: 'media/2026-summer/chongzou-meeting.webp', alt: '团队在建水开展校地座谈', width: 1800, height: 1351, caption: '建水校地座谈交流。' }),
+  image({ id: 'chongzou-exchange', slotId: 'project.chongzou-zuji.gallery', stage: '2026-summer', project: 'chongzou-zuji', src: 'media/2026-summer/chongzou-exchange.webp', alt: '团队成员在座谈会上发言', width: 1800, height: 1351, caption: '围绕地方发展与青年实践交流。' }),
+  image({ id: 'chongzou-creative-transport', slotId: 'project.chongzou-zuji.gallery', stage: '2026-summer', project: 'chongzou-zuji', src: 'media/2026-summer/creative/chongzou-transport.webp', alt: '团队设计的交通主题文创插画', width: 1440, height: 1080, caption: '中老铁路交通主题文创。' }),
+  ...[1, 2, 3, 4, 5].map((number) => image({ id: `chongzou-creative-jianshui-${number}`, slotId: 'project.chongzou-zuji.gallery', stage: '2026-summer', project: 'chongzou-zuji', src: `media/2026-summer/creative/chongzou-jianshui-${number}.webp`, alt: `团队设计的建水主题文创插画 ${number}`, width: 1080, height: 1620, caption: '建水地方文化主题文创。' })),
+  { id: 'chongzou-railway-course', stage: '2026-summer', project: 'chongzou-zuji', type: 'video', src: 'media/2026-summer/videos/chongzou-railway-course.mp4', poster: 'media/2026-summer/videos/chongzou-railway-course.jpg', alt: '中老铁路主题微课', width: 1280, height: 720, verified: true, caption: '一路向南·从速度到同心——中老铁路主题微课' },
+  { id: 'chongzou-documentary', stage: '2026-summer', project: 'chongzou-zuji', type: 'video', src: 'media/2026-summer/videos/chongzou-documentary.mp4', poster: 'media/2026-summer/videos/chongzou-documentary.jpg', alt: '七彩云南暑期实践纪实视频', width: 960, height: 544, verified: true, caption: '七彩云南·2026 年暑期实践纪实' },
+  image({ id: 'fazhi-hero', slotId: 'project.fazhi-kepu.hero', stage: '2026-summer', project: 'fazhi-kepu', src: 'media/2026-summer/fazhi-hero.webp', alt: '实践团队展示法治入万家主题横幅', width: 1800, height: 1351, caption: '在金鸡寨开展基层法治科普。' }),
+  image({ id: 'fazhi-talk', slotId: 'project.fazhi-kepu.gallery', stage: '2026-summer', project: 'fazhi-kepu', src: 'media/2026-summer/fazhi-talk.webp', alt: '团队成员面向村民开展普法讲解', width: 1800, height: 1351, caption: '面向基层群众开展法治知识讲解。' }),
+  image({ id: 'fazhi-materials', slotId: 'project.fazhi-kepu.gallery', stage: '2026-summer', project: 'fazhi-kepu', src: 'media/2026-summer/fazhi-materials.webp', alt: '普法宣传材料陈列在服务桌上', width: 1800, height: 1351, caption: '通俗化普法宣传材料。' }),
+  image({ id: 'fazhi-children', slotId: 'project.fazhi-kepu.gallery', stage: '2026-summer', project: 'fazhi-kepu', src: 'media/2026-summer/fazhi-children.webp', alt: '团队成员与儿童交流法治知识', width: 1800, height: 1351, caption: '以互动方式面向青少年开展科普。' }),
+  image({ id: 'fazhi-service', slotId: 'project.fazhi-kepu.gallery', stage: '2026-summer', project: 'fazhi-kepu', src: 'media/2026-summer/fazhi-service.webp', alt: '团队与村民共同展示法治宣传展板', width: 1800, height: 1351, caption: '面对面普法服务。' }),
+  image({ id: 'fazhi-group', slotId: 'project.fazhi-kepu.gallery', stage: '2026-summer', project: 'fazhi-kepu', src: 'media/2026-summer/fazhi-group.webp', alt: '团队与参与活动的村民合影', width: 1800, height: 1351, caption: '金鸡寨普法活动合影。' }),
+  image({ id: 'fazhi-dialogue', slotId: 'project.fazhi-kepu.gallery', stage: '2026-summer', project: 'fazhi-kepu', src: 'media/2026-summer/fazhi-dialogue.webp', alt: '村民围坐交流法治问题', width: 1800, height: 1351, caption: '结合真实生活场景交流法律问题。' }),
+  image({ id: 'fazhi-creative', slotId: 'project.fazhi-kepu.gallery', stage: '2026-summer', project: 'fazhi-kepu', src: 'media/2026-summer/creative/fazhi-poster.webp', alt: '团队设计的法治科普主题插画', width: 1448, height: 1086, caption: '法治科普主题文创插画。' }),
+  { id: 'fazhi-course', stage: '2026-summer', project: 'fazhi-kepu', type: 'video', src: 'media/2026-summer/videos/fazhi-course.mp4', poster: 'media/2026-summer/videos/fazhi-course.jpg', alt: '法治科普主题微课', width: 960, height: 544, verified: true, caption: '普法主题微课' },
+  image({ id: 'yulu-hero', slotId: 'project.yulu-tongda.hero', stage: '2026-summer', project: 'yulu-tongda', src: 'media/2026-summer/yulu-hero.webp', alt: '实践团队在甸尾乡服务点前合影', width: 1800, height: 1351, caption: '在甸尾乡开展推普与语言服务实践。' }),
+  image({ id: 'yulu-interview', slotId: 'project.yulu-tongda.gallery', stage: '2026-summer', project: 'yulu-tongda', src: 'media/2026-summer/yulu-interview.webp', alt: '团队成员在集市与居民交流', width: 1800, height: 1351, caption: '在公共空间开展语言使用情况访谈。' }),
+  image({ id: 'yulu-survey', slotId: 'project.yulu-tongda.gallery', stage: '2026-summer', project: 'yulu-tongda', src: 'media/2026-summer/yulu-survey.webp', alt: '团队成员向居民介绍语言调查内容', width: 1800, height: 1351, caption: '语言国情调查现场。' }),
+  image({ id: 'yulu-materials', slotId: 'project.yulu-tongda.gallery', stage: '2026-summer', project: 'yulu-tongda', src: 'media/2026-summer/yulu-materials.webp', alt: '居民查看推普宣传材料', width: 1800, height: 1351, caption: '推普宣传与互动讲解。' }),
+  image({ id: 'yulu-youth', slotId: 'project.yulu-tongda.gallery', stage: '2026-summer', project: 'yulu-tongda', src: 'media/2026-summer/yulu-youth.webp', alt: '团队与少年共同展示推普展板', width: 1800, height: 1351, caption: '面向青少年开展国家通用语言文字推广。' }),
+  image({ id: 'yulu-senior', slotId: 'project.yulu-tongda.gallery', stage: '2026-summer', project: 'yulu-tongda', src: 'media/2026-summer/yulu-senior.webp', alt: '团队成员与老年居民交流', width: 1800, height: 1351, caption: '倾听不同年龄居民的语言使用体验。' }),
+  image({ id: 'yulu-home-visit', slotId: 'project.yulu-tongda.gallery', stage: '2026-summer', project: 'yulu-tongda', src: 'media/2026-summer/yulu-home-visit.webp', alt: '团队成员入户开展语言访谈', width: 1800, height: 1351, caption: '入户交流与语言服务。' }),
+  ...[[1024,1536],[1024,1536],[1080,1080],[1086,1448],[992,1586],[1111,1415],[1536,1024],[1122,1402],[1536,1024]].map(([width, height], index) => image({ id: `yulu-creative-puer-${index + 1}`, slotId: 'project.yulu-tongda.gallery', stage: '2026-summer', project: 'yulu-tongda', src: `media/2026-summer/creative/yulu-puer-${index + 1}.webp`, alt: `团队设计的普洱主题明信片 ${index + 1}`, width, height, caption: '普洱地方文化主题明信片。' })),
+  ...[[1437,1095],[1254,1254],[1433,1098],[1024,1536]].map(([width, height], index) => image({ id: `yulu-creative-food-${index + 1}`, slotId: 'project.yulu-tongda.gallery', stage: '2026-summer', project: 'yulu-tongda', src: `media/2026-summer/creative/yulu-food-${index + 1}.webp`, alt: `团队设计的云南美食冰箱贴 ${index + 1}`, width, height, caption: '云南美食主题冰箱贴文创。' })),
+  { id: 'yulu-course', stage: '2026-summer', project: 'yulu-tongda', type: 'video', src: 'media/2026-summer/videos/yulu-course.mp4', poster: 'media/2026-summer/videos/yulu-course.jpg', alt: '语路通达推普主题微课', width: 1280, height: 720, verified: true, caption: '语路通达·桥连山海——推普主题微课' },
 ];
 
 export const mediaForSlot = (slotId: string): MediaRecord[] =>
